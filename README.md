@@ -19,7 +19,8 @@ AI(특히 코딩 에이전트)를 **실제 업무에 도입해서 굴리기 위�
 | [docs/07-roadmap.md](docs/07-roadmap.md) | 4주 실행 로드맵 + 체크리스트 |
 | [docs/08-gpt-claude-handoff.md](docs/08-gpt-claude-handoff.md) | **GPT ↔ Claude 연동 (API 없이 0원)** + 토큰 절감 |
 | [docs/09-canon-token-optimization.md](docs/09-canon-token-optimization.md) | 인역 캐논 토큰 최적화 실행 기록 (탐색 비용 −94.6%) |
-| [templates/](templates/) | 핸드오프 계약 템플릿 · GPT 커스텀 인스트럭션 |
+| [docs/10-innyeok-repo-findings.md](docs/10-innyeok-repo-findings.md) | 인역 저장소 점검 — 정본 이중화 등 발견 2건 |
+| [templates/](templates/) | 핸드오프 계약 · GPT 프로젝트 지침(인역 IP / VCRP) |
 | [scripts/](scripts/) | `canon_index.py` — 캐논 요약·행번호 목차 생성기 |
 
 ## 30초 요약

@@ -1,4 +1,10 @@
-# GPT에 걸 커스텀 인스트럭션 (그대로 붙여넣기)
+# GPT에 걸 커스텀 인스트럭션 (범용 · 그대로 붙여넣기)
+
+> 프로젝트별 전용 지침이 따로 있다. 해당 프로젝트를 쓴다면 그쪽이 우선이다.
+> - 인역 IP → [`gpt-instructions-innyeok.md`](gpt-instructions-innyeok.md)
+> - VCRP → [`gpt-instructions-vcrp.md`](gpt-instructions-vcrp.md)
+>
+> 아래는 새 프로젝트를 시작할 때 쓰는 범용 골격이다.
 
 > GPT의 **Custom Instructions** 또는 **Projects 지침**에 넣는다.
 > 목적: GPT의 출력이 곧 Claude가 바로 실행할 수 있는 작업 지시가 되게 한다.
