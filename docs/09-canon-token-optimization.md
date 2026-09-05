@@ -107,3 +107,35 @@ python3 scripts/canon_index.py .        # 헤더·INDEX.md 재생성
   하면 `grep`으로도 섹션을 찾을 수 있어 더 좋아지지만, 원문 변경 리스크가 있다.
 - **행 번호 자동 갱신**: 설정집을 고치면 목차 행 번호가 어긋난다.
   주 1회 Routine으로 `canon_index.py` 재실행 + PR 을 걸어두면 해결된다.
+
+---
+
+## 후속: 캐논 저장소에 적용 (2026-09-05)
+
+`docs/10`의 발견 2를 처리했다. 대상은 스킬 사본이 아니라 **진짜 캐논**이다.
+
+- 브랜치: `Dracloud-sys/innyeok-canon` → `claude/canon-index`
+- 대상 22개: `world/` 16 · `world/economy/` 5 · `characters/` 1
+- `world/overview-archive/`는 캐논이 아니므로 제외
+- `CANON.md`에 읽기 규약 4단계 추가
+
+검증: 원문 22/22 바이트 단위 동일, 행 번호 실측 일치(ATX·굵은줄 양쪽), 멱등 22/22.
+
+운영 매뉴얼의 `AI → 캐논 = 금지` 규칙 때문에 **master에 직접 커밋하지 않고
+브랜치로만 올렸다.** 머지는 사람이 판단한다.
+
+### 스크립트 변경
+
+문서 모음마다 요약이 다르므로 옵션을 추가했다.
+
+```bash
+python3 scripts/canon_index.py <dir> [<dir>...] \
+  --summaries scripts/canon-summaries-innyeok-canon.json \
+  --no-index          # CANON.md 가 이미 인덱스이므로 INDEX.md 를 만들지 않는다
+```
+
+- 디렉터리 여러 개를 한 번에 처리
+- `--summaries`: 요약 파일 지정
+- `--no-index`: `INDEX.md` 생성 생략
+- 제목 정리: DOCX 변환 잔재(`**`, 이스케이프, 중복 공백)를 걷어낸다.
+  `****"****출신지역의 레벨 무력화****"****` → `"출신지역의 레벨 무력화"`

@@ -14,7 +14,14 @@
 import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SUMMARIES = json.load(open(os.path.join(HERE, "canon-summaries.json"), encoding="utf-8"))
+SUMMARIES = {}
+
+
+def load_summaries(path=None):
+    global SUMMARIES
+    SUMMARIES = json.load(
+        open(path or os.path.join(HERE, "canon-summaries.json"), encoding="utf-8")
+    )
 
 BEGIN = "<!-- CANON-INDEX v1 -->"
 END = "<!-- /CANON-INDEX -->"
@@ -42,9 +49,15 @@ def is_noise(title: str) -> bool:
     )
 
 
+def clean_title(title: str) -> str:
+    """DOCX 변환 잔재를 걷어낸다: 굵게 표시, 이스케이프, 중복 공백."""
+    t = title.replace("**", "").replace("\\", "")
+    return re.sub(r"\s{2,}", " ", t).strip(" :·-")
+
+
 def sanitize(title: str) -> str:
     """HTML 주석 안에서 안전하도록 하이픈 연쇄를 em dash 로 접는다."""
-    t = re.sub(r"-{2,}", "—", title)
+    t = re.sub(r"-{2,}", "—", clean_title(title))
     return t.replace(">", "＞").strip()
 
 
@@ -54,14 +67,14 @@ def collect_headings(lines):
     for i, line in enumerate(lines, start=1):
         m = RE_ATX.match(line)
         if m:
-            title = m.group(2)
+            title = clean_title(m.group(2))
             if is_noise(title):
                 continue
             out.append((i, 0 if len(m.group(1)) <= 2 else 1, title))
             continue
         m = RE_BOLD.match(line)
         if m:
-            title = m.group(1)
+            title = clean_title(m.group(1))
             if is_noise(title):
                 continue
             out.append((i, 0 if RE_MAJOR.match(title) else 1, title))
@@ -128,25 +141,40 @@ def process(path, check=False):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    check = "--check" in sys.argv
-    ref_dir = args[0]
+    argv = sys.argv[1:]
+    check = "--check" in argv
+    no_index = "--no-index" in argv
 
-    targets = sorted(
-        f for f in os.listdir(ref_dir)
-        if f.endswith(".md") and f != "INDEX.md"
-    )
-    results = []
-    for f in targets:
-        results.append(process(os.path.join(ref_dir, f), check))
+    summaries_path = None
+    if "--summaries" in argv:
+        summaries_path = argv[argv.index("--summaries") + 1]
+    load_summaries(summaries_path)
 
-    width = max(len(r[0]) for r in results)
-    for name, n, status in results:
-        print(f"  {name:<{width}}  섹션 {n:>3}개  {status}")
+    dirs = [
+        a
+        for i, a in enumerate(argv)
+        if not a.startswith("--") and (i == 0 or argv[i - 1] != "--summaries")
+    ]
+    if not dirs:
+        sys.exit("사용법: canon_index.py <dir> [<dir>...] [--summaries PATH] [--no-index] [--check]")
 
-    if not check:
-        write_index(ref_dir, targets)
-        print(f"\n  INDEX.md 생성 ({len(targets)}개 파일)")
+    for ref_dir in dirs:
+        targets = sorted(
+            f for f in os.listdir(ref_dir)
+            if f.endswith(".md") and f != "INDEX.md"
+        )
+        if not targets:
+            continue
+        print(f"[{ref_dir}]")
+        results = [process(os.path.join(ref_dir, f), check) for f in targets]
+        width = max(len(r[0]) for r in results)
+        for name, n, status in results:
+            print(f"  {name:<{width}}  섹션 {n:>3}개  {status}")
+
+        if not check and not no_index:
+            write_index(ref_dir, targets)
+            print(f"  INDEX.md 생성 ({len(targets)}개 파일)")
+        print()
 
 
 def write_index(ref_dir, targets):
