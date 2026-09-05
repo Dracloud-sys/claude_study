@@ -17,6 +17,8 @@ AI(특히 코딩 에이전트)를 **실제 업무에 도입해서 굴리기 위�
 | [docs/05-scheduling.md](docs/05-scheduling.md) | 자거나 PC를 꺼도 돌아가는 예약 운용 5가지 방식 |
 | [docs/06-tradeoffs.md](docs/06-tradeoffs.md) | 모든 방식의 장단점 종합 비교표 |
 | [docs/07-roadmap.md](docs/07-roadmap.md) | 4주 실행 로드맵 + 체크리스트 |
+| [docs/08-gpt-claude-handoff.md](docs/08-gpt-claude-handoff.md) | **GPT ↔ Claude 연동 (API 없이 0원)** + 토큰 절감 |
+| [templates/](templates/) | 핸드오프 계약 템플릿 · GPT 커스텀 인스트럭션 |
 
 ## 30초 요약
 
@@ -27,3 +29,10 @@ AI(특히 코딩 에이전트)를 **실제 업무에 도입해서 굴리기 위�
 5. **예약**: PC를 꺼도 돌리려면 **Routines(클라우드)** 또는 **GitHub Actions cron**. PC가 켜져 있어야 하는 Desktop 예약작업 / `/loop`는 로컬 파일 접근이 필요할 때만.
 
 각 방식의 장단점은 [docs/06-tradeoffs.md](docs/06-tradeoffs.md)에 한 표로 모아뒀다.
+
+## GPT와 Claude를 같이 쓴다면
+
+두 AI 연동에 **API는 필요 없다.** 연동의 실체는 대화를 잇는 파이프가 아니라
+**둘이 같은 정본(canon)을 보고, 델타만 오가게 하는 포맷 합의**다.
+방법과 토큰 비용 진실은 [docs/08-gpt-claude-handoff.md](docs/08-gpt-claude-handoff.md),
+바로 쓸 템플릿은 [templates/](templates/)에 있다.
