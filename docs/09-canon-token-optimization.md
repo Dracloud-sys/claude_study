@@ -37,9 +37,17 @@
 ### ② `references/INDEX.md` 생성
 13개 설정집의 요약과 크기를 담은 4.6KB 파일. **작업 시작 시 이것만 읽는다.**
 
-### ③ 구버전 격리
-`innyeok-v2.md`, `v3.md` → `references/archive/` + 참조 금지 README.
-(사전 확인 결과 두 파일은 SKILL.md·다른 설정집 어디서도 참조되지 않아 안전했다.)
+### ③ 구버전 격리 + 정본 파일명 고정
+- `innyeok-v2.md`, `v3.md` → `references/archive/` + 참조 금지 README.
+  (사전 확인 결과 두 파일은 SKILL.md·다른 설정집 어디서도 참조되지 않아 안전했다.)
+- `innyeok-v4.md` → **`innyeok.md`** 로 개명. 파일명에서 개정 번호를 뺐다.
+
+  개정 번호가 파일명에 있으면 v5가 나올 때마다 SKILL.md와 다른 설정집의
+  참조를 전부 고쳐야 하고, 하나라도 놓치면 에이전트가 구버전을 읽는다.
+  이제 **파일명은 고정, 개정 번호는 문서 안에만** 있다.
+
+  경로 참조 10곳(SKILL.md 5, ecosystem-classification.md 5, archive/README.md 1)을 갱신했다.
+  본문 프로즈의 "세계관 설정집 v4" 표기는 *개정 버전*을 가리키는 것이라 그대로 뒀다.
 
 ### ④ SKILL.md 읽기 규약 교체
 "시작 전 v4를 읽어라" → **INDEX.md → CANON-INDEX 헤더 → 구간 부분 읽기** 4단계 규약으로.
@@ -58,7 +66,10 @@
 
 ## 검증
 
-- ✅ 헤더 제거 후 백업본과 **13개 파일 전부 바이트 단위 일치** (원문 무손상)
+- ✅ 헤더 제거 후 백업본과 대조 — **12개 파일 바이트 단위 일치**,
+  `ecosystem-classification.md`만 의도한 경로 4칸 변경 (`innyeok-v4.md` → `innyeok.md`)
+- ✅ `innyeok.md` 본문은 개명 전 `innyeok-v4.md`와 바이트 단위 일치
+- ✅ 잔여 `innyeok-v4.md` 경로 참조 0건 (archive 내 실제 보관본 제외)
 - ✅ TOC 행 번호가 실제 섹션과 일치 (`factions.md` "7. 무흔" → L685 확인)
 - ✅ 재실행 시 헤더가 쌓이지 않음 (멱등)
 
@@ -76,11 +87,23 @@ python3 scripts/canon_index.py <...>/references --check   # 갱신 필요 여부
 - 설정집 내용이 바뀌면 행 번호가 어긋나므로 **재실행이 필요하다.**
   → `docs/05-scheduling.md`의 Routine으로 주 1회 자동 재생성 + PR 을 걸어두면 좋다.
 
+## 정본 승격 절차 (v5 이후)
+
+파일명은 언제나 `innyeok.md`다. 개정할 때 참조를 고칠 일이 없다.
+
+```bash
+cd <worldbuilding-innyeok>/references
+cp innyeok.md archive/innyeok-v4.md    # 현행본을 개정 번호로 보관
+#  새 원고를 innyeok.md 로 덮어쓴다 (파일명은 그대로)
+python3 scripts/canon_index.py .        # 헤더·INDEX.md 재생성
+```
+
+마지막으로 `scripts/canon-summaries.json`의 `innyeok.md` 요약에서
+"현재 개정: v4"를 새 번호로 고친다. 같은 안내가 `references/archive/README.md`에도 있다.
+
 ## 남은 개선 여지
 
-- **정본 파일명 고정**: 지금은 `innyeok-v4.md`. v5가 나오면 SKILL.md와
-  `ecosystem-classification.md`의 참조 4곳을 다시 고쳐야 한다.
-  `innyeok.md`(정본) + `archive/innyeok-v4.md` 구조가 장기적으로 낫다.
-  (이번엔 참조 4곳이 전부 v4로 일관되어 있어 손대지 않았다.)
-- **유사 헤딩 → 진짜 헤딩 변환**: 본문을 고쳐야 해서 이번엔 하지 않았다.
+- **유사 헤딩 → 진짜 마크다운 헤딩 변환**: 본문을 고쳐야 해서 하지 않았다.
   하면 `grep`으로도 섹션을 찾을 수 있어 더 좋아지지만, 원문 변경 리스크가 있다.
+- **행 번호 자동 갱신**: 설정집을 고치면 목차 행 번호가 어긋난다.
+  주 1회 Routine으로 `canon_index.py` 재실행 + PR 을 걸어두면 해결된다.

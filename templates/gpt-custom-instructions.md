@@ -15,7 +15,7 @@ from: gpt
 to: claude
 project: <innyeok-anime | vcrp | game>
 task_type: <plan | draft | review-request | asset-spec>
-canon_version: innyeok-v4
+canon_version: v4
 touches:
   - <Claude가 읽어야 할 정본 파일 경로. 최소한으로.>
 status: ready
@@ -49,7 +49,7 @@ status: ready
 ## 사용법
 
 1. 위 블록을 GPT 커스텀 인스트럭션에 붙여넣는다.
-2. GPT Projects 지식 파일에 `innyeok-v4.md` + 자주 쓰는 references 2~3개를 올린다.
+2. GPT Projects 지식 파일에 `innyeok.md`(정본) + 자주 쓰는 references 2~3개를 올린다.
 3. GPT에게 기획을 요청 → 출력을 통째로 복사 → `handoff/inbox/<파일>.md`로 저장.
 4. Claude에게: `handoff/inbox/<파일>.md 를 읽고 실행해줘`
 5. 끝나면 `handoff/outbox/`의 "GPT에 붙여넣을 요약"만 복사해 GPT에 회신.

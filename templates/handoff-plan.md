@@ -10,7 +10,7 @@ from: gpt
 to: claude
 project: innyeok-anime          # innyeok-anime | vcrp | game | 기타
 task_type: plan                 # plan | draft | review-request | asset-spec
-canon_version: innyeok-v4
+canon_version: v4            # innyeok.md 의 개정 번호
 touches:                        # ★ Claude가 읽어야 할 정본 파일만 지정 (토큰 절감 핵심)
   - references/factions.md
   - references/cities.md

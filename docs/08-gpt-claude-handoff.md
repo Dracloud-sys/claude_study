@@ -44,7 +44,7 @@ git 자체는 토큰을 **0** 쓴다. 커밋·푸시·diff는 전부 셸 명령�
 | factions.md | 60KB | 2만 토큰대 |
 | architecture.md | 59KB | 2만 토큰대 |
 | history-chronology.md | 57KB | 2만 토큰대 |
-| combat.md · character-archetypes.md · innyeok-v4.md | 각 ~49KB | 각 1.5만 토큰대 |
+| combat.md · character-archetypes.md · innyeok.md | 각 ~49KB | 각 1.5만 토큰대 |
 | **references 전체** | **~610KB** | **20만 토큰 이상** |
 
 > 한 세션에서 references 3~4개만 읽어도 **git을 100번 쓰는 것보다 비싸다.**
@@ -60,9 +60,9 @@ git 자체는 토큰을 **0** 쓴다. 커밋·푸시·diff는 전부 셸 명령�
    → Claude가 요약만 읽고 **필요한 섹션만** 추가로 읽게 된다. 2만 → 2천 토큰.
 
 2. **구버전 정본을 references에서 치운다**
-   현재 `innyeok-v2.md`, `v3.md`, `v4.md`가 함께 있다. 정본은 v4 하나인데
+   구버전 `innyeok-v2.md`, `v3.md`가 정본과 같은 폴더에 있으면
    에이전트가 v3를 읽으면 **조용히 틀린 설정으로 작업한다.** 일관성 사고의 1순위 원인.
-   → `references/archive/`로 이동하거나 삭제. 정본은 `innyeok.md` 같은 고정 이름으로.
+   → `references/archive/`로 이동. 정본 파일명은 개정과 무관하게 `innyeok.md`로 고정한다.
 
 3. **핸드오프 문서에 `touches` 필드를 쓴다** (아래 계약 참고)
    "이번 작업은 factions.md와 cities.md만 건드림" → Claude가 그 둘만 읽는다.
@@ -87,7 +87,7 @@ git 자체는 토큰을 **0** 쓴다. 커밋·푸시·diff는 전부 셸 명령�
 ## 방법 2 — 정본을 양쪽에 심기
 
 - Claude: 이미 스킬에 있음 ✅
-- GPT: **Projects / 커스텀 GPT의 지식 파일**로 `innyeok-v4.md` + 자주 쓰는 references 2~3개 업로드
+- GPT: **Projects / 커스텀 GPT의 지식 파일**로 `innyeok.md`(정본) + 자주 쓰는 references 2~3개 업로드
   (업로드 가능 용량·개수는 플랜에 따라 다름. 전부 올리지 말고 **핵심만**)
 
 | 장점 | 단점 |

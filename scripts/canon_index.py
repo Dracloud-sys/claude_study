@@ -161,7 +161,9 @@ def write_index(ref_dir, targets):
         "| 파일 | 크기 | 내용 |",
         "|---|---|---|",
     ]
-    for f in targets:
+    # 정본을 맨 위로 올린다 — 목록에서 묻히면 안 된다.
+    ordered = sorted(targets, key=lambda f: (f != "innyeok.md", f))
+    for f in ordered:
         size = os.path.getsize(os.path.join(ref_dir, f))
         summary = SUMMARIES.get(f, "(요약 미작성)")
         lines.append(f"| `{f}` | {size // 1024}KB | {summary} |")
@@ -169,7 +171,8 @@ def write_index(ref_dir, targets):
         "",
         "## 읽기 순서 원칙",
         "",
-        "1. `innyeok-v4.md` 가 정본이다. 다른 설정집과 충돌하면 v4가 이긴다.",
+        "1. `innyeok.md` 가 정본이다. 다른 설정집과 충돌하면 정본이 이긴다.",
+        "   파일명은 개정(v4·v5…)과 무관하게 고정이다. 개정 번호는 문서 안에 적힌다.",
         "2. 필요한 파일만, 필요한 구간만 읽는다.",
         "3. 구버전(v2·v3)은 `archive/` 에 있다. **절대 참조하지 않는다.**",
         "",
